@@ -6,7 +6,12 @@
 // 5、轻提示框显示
 document.querySelector('#btn-register').addEventListener('click', async () => {
   const { username, password } = serialize(document.querySelector('.register-form'), { hash: true, empty: true })
-  verify(username, password)
+  if (!/^\w{8,30}$/.test(username)) {
+    return toastShow('用户名长度应为8-30位')
+  }
+  if (!/^\w{6,30}$/.test(password)) {
+    return toastShow('密码长度应为6-30位')
+  }
   try {
     const res = await axios.post('/register', { username, password })
     toastShow(res.data.message)
